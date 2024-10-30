@@ -10,8 +10,7 @@ Questa è un'applicazione di gioco Tic Tac Toe sviluppata in PHP utilizzando il 
 - Creazione di nuove partite di Tic Tac Toe.
 - Possibilità di effettuare mosse seguendo le regole del gioco.
 - Gestione delle condizioni di vittoria e pareggio.
-- Eccezioni personalizzate per errori comuni, come mosse non valide o partite già concluse.
-- Middleware per assicurare che le mosse vengano effettuate solo durante una partita in corso.
+- Eccezioni personalizzate per errori comuni, come mosse non valide (posizione/giocatore) o partite già concluse.
 - Uso di Enums per migliorare la leggibilità e la manutenibilità del codice.
 - Test completi per unità e integrazione.
 
