@@ -16,7 +16,7 @@ class Model extends JsonResource
             'id' => $this->id,
             'status' => $this->status,
             'grid' => json_decode($this->grid),
-            'turn' => $this->turn->value,
+            'player_id' => $this->player_id,
             'winner' => $this->winner,
             'created_at' => $this->created_at->toDateString(),
             'updated_at' => $this->updated_at->toDateString(),

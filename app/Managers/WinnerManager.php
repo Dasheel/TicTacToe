@@ -20,4 +20,9 @@ class WinnerManager implements WinnerManagerContract
 
         return false;
     }
+
+    public function isDraw(array $grid): bool
+    {
+        return !in_array(null, $grid, true);
+    }
 }

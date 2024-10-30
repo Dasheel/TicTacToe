@@ -14,18 +14,13 @@ class GameResultHelper implements GameResultHelperContract
     public function determineWinner(Game $game, array $grid): ?GameWinner
     {
         if ($this->winnerManager->hasWinner($grid)) {
-            return GameWinner::fromTurn($game->turn);
+            return GameWinner::fromGame($game);
         }
 
-        if ($this->isDraw($grid)) {
-            return GameWinner::Draw;
+        if ($this->winnerManager->isDraw($grid)) {
+            return GameWinner::DRAW;
         }
 
         return null;
-    }
-
-    private function isDraw(array $grid): bool
-    {
-        return !in_array(null, $grid, true);
     }
 }

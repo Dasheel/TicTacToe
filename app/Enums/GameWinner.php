@@ -2,14 +2,16 @@
 
 namespace App\Enums;
 
+use App\Models\Game;
+
 enum GameWinner: string
 {
-    case X = 'X';
-    case O = 'O';
-    case Draw = 'draw';
+    case PLAYER_1 = 'Player 1';
+    case PLAYER_2 = 'Player 2';
+    case DRAW = 'Draw';
 
-    public static function fromTurn(GameTurn $turn): self
+    public static function fromGame(Game $game): self
     {
-        return $turn === GameTurn::X ? self::X : self::O;
+        return $game->player_id === 1 ? self::PLAYER_1 : self::PLAYER_2;
     }
 }

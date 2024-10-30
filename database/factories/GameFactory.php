@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Game;
 use App\Enums\GameStatus;
+use App\Enums\GameWinner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,14 +19,14 @@ class GameFactory extends Factory
         return [
             'status' => GameStatus::IN_PROGRESS,
             'grid' => json_encode(array_fill(0, 9, null)),
-            'turn' => 'X',
+            'turn' => 1,
             'winner' => null,
         ];
     }
 
-    public function completedWithWinner(string $winner): static
+    public function completedWithWinner(GameWinner $winner): static
     {
-        return $this->state(function (array $attributes) use ($winner) {
+        return $this->state(function () use ($winner) {
             return [
                 'status' => GameStatus::COMPLETED,
                 'winner' => $winner,
@@ -36,10 +37,10 @@ class GameFactory extends Factory
 
     public function completedDraw(): static
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'status' => GameStatus::COMPLETED,
-                'winner' => 'draw',
+                'winner' => GameWinner::DRAW,
                 'grid' => json_encode(['X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O']),
             ];
         });

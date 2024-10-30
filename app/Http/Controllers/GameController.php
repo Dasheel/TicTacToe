@@ -21,7 +21,8 @@ class GameController extends Controller
     public function makeMove(MoveRequest $request, Game $game): GameResource
     {
         $position = $request->validated('position');
-        $game = $this->gameService->makeMove($game, $position);
+        $playerId = $request->validated('player_id');
+        $game = $this->gameService->makeMove($game, $position, $playerId);
 
         return new GameResource($game);
     }

@@ -5,6 +5,7 @@ namespace Tests\Unit\Services;
 use Tests\TestCase;
 use App\Models\Game;
 use App\Enums\GameStatus;
+use App\Enums\GameWinner;
 use Mockery\MockInterface;
 use App\Services\Contracts\GameService;
 use App\Exceptions\InvalidMoveException;
@@ -69,7 +70,7 @@ class GameServiceTest extends TestCase
         $this->expectException(GameAlreadyCompletedException::class);
         $this->expectExceptionMessage('Game is already completed');
 
-        $game = Game::factory()->completedWithWinner('X')->create();
+        $game = Game::factory()->completedWithWinner(GameWinner::PLAYER_1)->create();
 
         /** @var GameService $service */
         $service = $this->app->make(GameService::class);
@@ -81,7 +82,7 @@ class GameServiceTest extends TestCase
         $this->expectException(InvalidMoveException::class);
         $this->expectExceptionMessage('The move is invalid.');
 
-        $game = Game::factory()->completedWithWinner('X')->create([
+        $game = Game::factory()->completedWithWinner(GameWinner::PLAYER_1)->create([
             'status' => GameStatus::IN_PROGRESS,
             'grid' => json_encode(['X', null, null, null, null, null, null, null, null]),
         ]);

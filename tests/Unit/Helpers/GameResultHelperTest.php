@@ -17,11 +17,11 @@ class GameResultHelperTest extends TestCase
 
     public function testDetermineWinner(): void
     {
-        $game = Game::factory()->completedWithWinner(GameWinner::X->value)->create();
+        $game = Game::factory()->completedWithWinner(GameWinner::PLAYER_1)->create();
 
         /** @var GameResultHelper $helper */
         $helper = $this->app->make(GameResultHelper::class);
-        $this->assertEquals(GameWinner::X->value, $helper->determineWinner($game, json_decode($game->grid, true))->value);
+        $this->assertEquals(GameWinner::PLAYER_1->value, $helper->determineWinner($game, json_decode($game->grid, true))->value);
     }
 
     public function testIsDraw(): void
@@ -30,6 +30,6 @@ class GameResultHelperTest extends TestCase
 
         /** @var GameResultHelper $helper */
         $helper = $this->app->make(GameResultHelper::class);
-        $this->assertEquals(GameWinner::Draw, $helper->determineWinner($game, json_decode($game->grid, true)));
+        $this->assertEquals(GameWinner::DRAW, $helper->determineWinner($game, json_decode($game->grid, true)));
     }
 }

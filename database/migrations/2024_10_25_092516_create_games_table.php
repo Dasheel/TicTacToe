@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\GameWinner;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -11,8 +12,12 @@ return new class extends Migration {
             $table->id();
             $table->string('status')->default('in_progress');
             $table->json('grid');
-            $table->enum('turn', ['X', 'O'])->default('X');
-            $table->enum('winner', ['X', 'O', 'draw'])->nullable();
+            $table->unsignedTinyInteger('player_id')->default(1);
+            $table->enum('winner', [
+                GameWinner::PLAYER_1->value,
+                GameWinner::PLAYER_2->value,
+                GameWinner::DRAW->value
+            ])->nullable();
             $table->timestamps();
         });
     }

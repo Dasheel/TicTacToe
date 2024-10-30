@@ -3,7 +3,7 @@
 namespace Tests\Unit\Enums;
 
 use Tests\TestCase;
-use App\Enums\GameTurn;
+use App\Models\Game;
 use App\Enums\GameWinner;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -16,14 +16,17 @@ class GameWinnerTest extends TestCase
 
     public function testHasExpectedValues()
     {
-        $this->assertEquals('X', GameWinner::X->value);
-        $this->assertEquals('O', GameWinner::O->value);
-        $this->assertEquals('draw', GameWinner::Draw->value);
+        $this->assertEquals('Player 1', GameWinner::PLAYER_1->value);
+        $this->assertEquals('Player 2', GameWinner::PLAYER_2->value);
+        $this->assertEquals('Draw', GameWinner::DRAW->value);
     }
 
     public function testFromTurn()
     {
-        $this->assertEquals(GameWinner::X, GameWinner::fromTurn(GameTurn::X));
-        $this->assertEquals(GameWinner::O, GameWinner::fromTurn(GameTurn::O));
+        $game = Game::factory()->completedWithWinner(GameWinner::PLAYER_1)->create();
+        $this->assertEquals(GameWinner::PLAYER_1, GameWinner::fromGame($game));
+
+        $game2 = Game::factory()->completedWithWinner(GameWinner::PLAYER_2)->create();
+        $this->assertEquals(GameWinner::PLAYER_2, GameWinner::fromGame($game2));
     }
 }
