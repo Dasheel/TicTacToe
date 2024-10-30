@@ -19,7 +19,7 @@ class GameFactory extends Factory
         return [
             'status' => GameStatus::IN_PROGRESS,
             'grid' => json_encode(array_fill(0, 9, null)),
-            'turn' => 1,
+            'player_id' => 1,
             'winner' => null,
         ];
     }
@@ -29,8 +29,9 @@ class GameFactory extends Factory
         return $this->state(function () use ($winner) {
             return [
                 'status' => GameStatus::COMPLETED,
+                'player_id' => $winner->value === 'Player 1' ? 1 : 2,
                 'winner' => $winner,
-                'grid' => json_encode(['X', 'X', 'X', null, null, null, 'O', 'O', null]),
+                'grid' => json_encode([1, 1, 1, null, null, null, 2, 2, null]),
             ];
         });
     }
@@ -40,8 +41,9 @@ class GameFactory extends Factory
         return $this->state(function () {
             return [
                 'status' => GameStatus::COMPLETED,
+                'player_id' => random_int(1, 2),
                 'winner' => GameWinner::DRAW,
-                'grid' => json_encode(['X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O']),
+                'grid' => json_encode([1, 2, 1, 2, 2, 1, 1, 1, 2]),
             ];
         });
     }

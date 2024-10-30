@@ -9,6 +9,7 @@ use App\Enums\GameWinner;
 use Mockery\MockInterface;
 use App\Services\Contracts\GameService;
 use App\Exceptions\InvalidMoveException;
+use App\Exceptions\InvalidPlayerException;
 use App\Helpers\Contracts\GameResultHelper;
 use App\Repositories\Contracts\GameRepository;
 use App\Exceptions\GameAlreadyCompletedException;
@@ -25,7 +26,7 @@ class GameServiceTest extends TestCase
         $attributes = [
             'grid' => json_encode(array_fill(0, 9, null)),
             'status' => GameStatus::IN_PROGRESS,
-            'turn' => 'X',
+            'player_id' => 1,
         ];
 
         $this->mock(GameRepository::class, function (MockInterface $mock) use ($attributes, $game) {
@@ -41,18 +42,15 @@ class GameServiceTest extends TestCase
     {
         $game = Game::factory()->create();
         $grid = json_decode($game->grid, true);
-        $grid[0] = $game->turn->value;
+        $grid[0] = 1;
 
         $this->mock(GameRepository::class, function (MockInterface $mock) use ($game, $grid) {
             $attributes = [
                 'grid' => json_encode($grid),
-                'turn' => $game->turn->next(),
+                'player_id' => $game->nextPlayer(),
             ];
 
-            $gameUpdated = Game::factory()->create([
-                'grid' => json_encode($grid),
-                'turn' => $game->turn->next(),
-            ]);
+            $gameUpdated = Game::factory()->create($attributes);
             $mock->allows('updateGame')->once()->with($game, $attributes)->andReturn($gameUpdated);
         });
 
@@ -62,7 +60,7 @@ class GameServiceTest extends TestCase
 
         /** @var GameService $service */
         $service = $this->app->make(GameService::class);
-        $service->makeMove($game, 0);
+        $service->makeMove($game, 0, 1);
     }
 
     public function testMakeMoveThrowsExceptionIfGameIsCompleted(): void
@@ -74,7 +72,7 @@ class GameServiceTest extends TestCase
 
         /** @var GameService $service */
         $service = $this->app->make(GameService::class);
-        $service->makeMove($game, 0);
+        $service->makeMove($game, 0, 2);
     }
 
     public function testMakeMoveThrowsExceptionIfPositionAlreadyTaken()
@@ -82,13 +80,26 @@ class GameServiceTest extends TestCase
         $this->expectException(InvalidMoveException::class);
         $this->expectExceptionMessage('The move is invalid.');
 
-        $game = Game::factory()->completedWithWinner(GameWinner::PLAYER_1)->create([
-            'status' => GameStatus::IN_PROGRESS,
-            'grid' => json_encode(['X', null, null, null, null, null, null, null, null]),
+        $game = Game::factory()->create([
+            'grid' => json_encode([1, null, null, null, null, null, null, null, null]),
         ]);
 
         /** @var GameService $service */
         $service = $this->app->make(GameService::class);
-        $service->makeMove($game, 0);
+        $service->makeMove($game, 0, 1);
+    }
+
+    public function testMakeMoveThrowsExceptionIfWrongPlayerPlay()
+    {
+        $this->expectException(InvalidPlayerException::class);
+        $this->expectExceptionMessage('It\'s not this player\'s turn.');
+
+        $game = Game::factory()->create([
+            'grid' => json_encode([1, null, null, null, null, null, null, null, null]),
+        ]);
+
+        /** @var GameService $service */
+        $service = $this->app->make(GameService::class);
+        $service->makeMove($game, 1, 2);
     }
 }

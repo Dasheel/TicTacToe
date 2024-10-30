@@ -9,7 +9,7 @@ class MoveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'player_id' => 'required|in:1,2',
+            'player_id' => 'required|integer|in:1,2',
             'position' => 'required|integer|min:0|max:8',
         ];
     }

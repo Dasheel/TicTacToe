@@ -23,7 +23,7 @@ class GameService implements GameServiceContract
         $attributes = [
             'grid' => json_encode(array_fill(0, 9, null)),
             'status' => GameStatus::IN_PROGRESS,
-            'turn' => 'X',
+            'player_id' => 1,
         ];
 
         return $this->gameRepository->createNewGame($attributes);
@@ -47,7 +47,7 @@ class GameService implements GameServiceContract
         $grid[$position] = $playerId;
         $attributes = [
             'grid' => json_encode($grid),
-            'turn' => $game->nextPlayer(),
+            'player_id' => $game->nextPlayer(),
         ];
 
         $winner = $this->gameResultHelper->determineWinner($game, $grid);

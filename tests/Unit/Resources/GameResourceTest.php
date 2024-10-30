@@ -20,8 +20,7 @@ class GameResourceTest extends TestCase
         $game = Game::factory()->create([
             'status' => GameStatus::IN_PROGRESS,
             'grid' => json_encode([null, null, null, null, null, null, null, null, null]),
-            'turn' => 'X',
-            'winner' => null,
+            'player_id' => 1,
         ]);
 
         $resource = new GameResource($game);
@@ -30,9 +29,9 @@ class GameResourceTest extends TestCase
 
         $this->assertEquals([
             'id' => $game->id,
-            'status' => GameStatus::IN_PROGRESS,
+            'status' => 'in_progress',
             'grid' => [null, null, null, null, null, null, null, null, null],
-            'turn' => 'X',
+            'player_id' => 1,
             'winner' => null,
             'created_at' => $game->created_at->toDateString(),
             'updated_at' => $game->updated_at->toDateString(),

@@ -14,10 +14,10 @@ class Model extends JsonResource
     {
         return [
             'id' => $this->id,
-            'status' => $this->status,
+            'status' => $this->status->value,
             'grid' => json_decode($this->grid),
             'player_id' => $this->player_id,
-            'winner' => $this->winner,
+            'winner' => $this->winner?->value,
             'created_at' => $this->created_at->toDateString(),
             'updated_at' => $this->updated_at->toDateString(),
         ];

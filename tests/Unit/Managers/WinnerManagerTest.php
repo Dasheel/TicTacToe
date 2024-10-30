@@ -14,13 +14,27 @@ class WinnerManagerTest extends TestCase
     {
         /** @var WinnerManager $manager */
         $manager = $this->app->make(WinnerManager::class);
-        $this->assertTrue($manager->hasWinner(['X', 'X', 'X', null, null, null, null, null, null]));
+        $this->assertTrue($manager->hasWinner([1, 1, 1, null, null, null, null, null, null]));
     }
 
     public function testNotWinningCondition(): void
     {
         /** @var WinnerManager $manager */
         $manager = $this->app->make(WinnerManager::class);
-        $this->assertFalse($manager->hasWinner(['X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O']));
+        $this->assertFalse($manager->hasWinner([1, 2, 1, 2, 2, 1, 1, 1, 2]));
+    }
+
+    public function testDrawCondition(): void
+    {
+        /** @var WinnerManager $manager */
+        $manager = $this->app->make(WinnerManager::class);
+        $this->assertTrue($manager->isDraw([1, 2, 1, 2, 1, 2, 2, 1, 2]));
+    }
+
+    public function testNotDrawCondition(): void
+    {
+        /** @var WinnerManager $manager */
+        $manager = $this->app->make(WinnerManager::class);
+        $this->assertFalse($manager->isDraw([1, 2, null, 2, 1, 2, 2, 1, null]));
     }
 }

@@ -22,7 +22,7 @@ class GameStartTest extends TestCase
                 'id',
                 'status',
                 'grid',
-                'turn',
+                'player_id',
                 'winner',
                 'created_at',
                 'updated_at',
