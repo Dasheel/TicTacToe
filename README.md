@@ -81,3 +81,18 @@ Sempre all'interno del container, puoi eseguire tutti i test del progetto:
 ```bash
 composer test
 ```
+
+### 7. Eseguire il test da prompt dei comandi
+Per iniziare una nuova partita di Tic Tac Toe, utilizza il seguente comando:
+```bash
+curl -X POST http://localhost:8080/api/games/ 
+```
+
+Dopo aver avviato il gioco, prendi l'id dal JSON di risposta e usalo per fare una mossa. Sostituisci {idGame} con l'ID reale del gioco:
+```bash
+curl -X POST http://localhost:8080/api/games/{idGame}/move \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-d '{"position": 3, "player_id": 1}'
+```
+
