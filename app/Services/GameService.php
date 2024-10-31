@@ -32,16 +32,16 @@ class GameService implements GameServiceContract
     public function makeMove(Game $game, int $position, int $playerId): Game
     {
         if (!$game->status->isInProgress()) {
-            throw new GameAlreadyCompletedException();
+            throw new GameAlreadyCompletedException('Game is already completed.');
         }
 
         if ($game->player_id !== $playerId) {
-            throw new InvalidPlayerException();
+            throw new InvalidPlayerException('It\'s not this player\'s turn.');
         }
 
         $grid = json_decode($game->grid, true);
         if ($grid[$position] !== null) {
-            throw new InvalidMoveException();
+            throw new InvalidMoveException('The move is invalid.');
         }
 
         $grid[$position] = $playerId;

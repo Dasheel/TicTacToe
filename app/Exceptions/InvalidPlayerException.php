@@ -2,7 +2,19 @@
 
 namespace App\Exceptions;
 
-class InvalidPlayerException extends \Exception
+use App\Exceptions\Abstracts\HttpException;
+use Symfony\Component\HttpFoundation\Response;
+
+class InvalidPlayerException extends HttpException
 {
-    protected $message = 'It\'s not this player\'s turn.';
+    public function __construct(
+        $message = '',
+        array $data = [],
+        int $statusCode = Response::HTTP_BAD_REQUEST,
+        ?\Throwable $previous = null,
+        array $headers = [],
+        int $code = 400
+    ) {
+        parent::__construct($message, $data, $statusCode, $previous, $headers, $code);
+    }
 }
